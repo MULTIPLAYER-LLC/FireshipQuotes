@@ -52,6 +52,9 @@ Once copied, populate the omitted fields (marked with `%%FILL%%`).
 #### ENV / PUBLIC_ENV
 set these values to the environment as it is named in the directory this `.env` file is within. (probably `development` or `production`).
 
+#### EXPOSE_PORT
+the port your app listens on. For development, you want this on port 80.
+
 #### DISCORD_OAUTH_ID / DISCORD_OAUTH_SECRET
 these values are the oauth id and secret for the discord application through which the project requests oauth.
 
