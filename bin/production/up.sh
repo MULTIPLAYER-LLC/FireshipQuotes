@@ -5,4 +5,4 @@ mkdir -p ./mnt-production/grafana
 mkdir -p ./mnt-production/loki
 mkdir -p ./mnt-production/tarpit
 
-sudo docker compose --env-file env/development/.env -f compose.production.yaml up --build -d --remove-orphans
+sudo docker compose --env-file env/production/.env -f compose.production.yaml up --build -d --remove-orphans
