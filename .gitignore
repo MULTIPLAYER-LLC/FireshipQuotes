@@ -1,0 +1,5 @@
+node_modules
+/tmp
+/mnt-development/
+/mnt-production/
+/env/development/.env

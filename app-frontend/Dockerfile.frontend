@@ -1,0 +1,41 @@
+FROM ubuntu:24.04
+
+USER root
+WORKDIR /srv/app-frontend
+
+COPY bin/_init/ /srv/bin/
+RUN chmod -R 777 /srv/bin
+COPY .tool-versions /srv/app-frontend/
+RUN chmod -R 777 /srv/app-frontend
+
+RUN /srv/bin/init-apt-install.sh
+
+RUN groupadd -g 1001 fireshipquotes
+RUN useradd -m -u 1001 -g 1001 fireshipquotes
+USER 1001:1001
+
+RUN /srv/bin/init-asdf.sh
+ENV PATH=/home/fireshipquotes/.asdf/bin:$PATH
+
+RUN /srv/bin/init-nodejs.sh
+ENV PATH=/home/fireshipquotes/.asdf/shims:$PATH
+
+COPY app-frontend/package.json app-frontend/package-lock.json app-frontend/tsconfig.json app-frontend/vite.config.ts app-frontend/svelte.config.js /srv/app-frontend/
+
+# for some reason package-lock.json does not have the right perms... sus
+USER root
+RUN chmod 777 /srv/app-frontend/package-lock.json
+USER 1001:1001
+
+RUN /srv/bin/init-npm.sh
+
+COPY app-frontend/static/ /srv/app-frontend/static/
+COPY app-frontend/src/ /srv/app-frontend/src/
+
+RUN npm run build
+
+ENV HOST=0.0.0.0
+ENV PORT=3007
+
+EXPOSE 3007
+CMD ["node", "build"]

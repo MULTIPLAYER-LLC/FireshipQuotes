@@ -1,0 +1,19 @@
+--- # Nepenthes Config
+
+http_host: '::'
+http_port: 8893
+templates: '/usr/nepenthes/templates'
+words: '/usr/share/dict/usa'
+
+forget_time: 86400
+forget_hits: 10
+
+persist_stats: '/vol/nepenthes/statsfile.json'
+seed_file: '/vol/nepenthes/seed.txt'
+
+markov: '/srv/corpus.sqlite.db'
+markov_min: 599
+markov_max: 600
+
+min_wait: 4
+max_wait: 25

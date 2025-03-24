@@ -1,0 +1,8 @@
+FROM grafana/grafana-oss:11.4.0-ubuntu
+
+COPY app-logging/grafana/sources.yaml /etc/grafana/provisioning/datasources/datasources.yaml
+COPY app-logging/grafana/config.ini 	/etc/grafana/config.ini
+
+ENV GF_PATHS_CONFIG='/etc/grafana/config.ini'
+
+USER root

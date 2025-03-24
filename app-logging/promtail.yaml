@@ -1,0 +1,37 @@
+# Configures global settings which impact all targets.
+global:
+  file_watch_config:
+    min_poll_frequency: 250ms
+    max_poll_frequency: 500ms
+
+# Configures the server for Promtail.
+server:
+  disable: true
+
+# Describes how Promtail connects to multiple instances
+# of Grafana Loki, sending logs to each.
+# WARNING: If one of the remote Loki servers fails to respond or responds
+# with any error which is retryable, this will impact sending logs to any
+# other configured remote Loki servers.  Sending is done on a single thread!
+# It is generally recommended to run multiple Promtail clients in parallel
+# if you want to send to multiple remote Loki instances.
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: scrape
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: label
+            values: ["env=${ENV}"]
+          - name: label
+            values: ["project=fireshipquotes"]
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'logstream'
+      - source_labels: ['__meta_docker_container_label_service']
+        target_label: 'service'

@@ -1,0 +1,116 @@
+name: "fireshipquotes-development"
+
+services:
+
+  pocketbase:
+    image: fq-pocketbase:0.23.12-alpine
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "pocketbase"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-pocketbase/Dockerfile.pocketbase
+    volumes:
+      - ./app-pocketbase/pb_migrations:/pb/pb_migrations # unique to dev
+      - ./mnt-development/pocketbase:/pb/pb_data
+
+  frontend:
+    image: fq-frontend:1.0.0-alpine
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "frontend"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-frontend/Dockerfile.frontend
+    depends_on:
+      - pocketbase
+
+  proxy:
+    image: fq-proxy:nginx-1.27.3-alpine
+    restart: no
+    stop_signal: SIGKILL
+    stop_grace_period: 0s
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "proxy"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-proxy/Dockerfile.proxy
+    ports:
+      - "${EXPOSE_PORT}:7733"
+    depends_on:
+      - pocketbase
+      - frontend
+      - grafana
+
+  grafana:
+    image: fq-grafana-oss:11.4.0-ubuntu
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "grafana"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-logging/grafana/Dockerfile.grafana
+    volumes:
+      - ./mnt-development/grafana:/var/lib/grafana
+
+  loki:
+    image: fq-loki:3.3.2
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "loki"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-logging/Dockerfile.loki
+    volumes:
+      - ./mnt-development/loki:/data
+
+  promtail:
+    image: fq-promtail:3.3.2
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "promtail"
+    env_file:
+      - env/development/.env
+    build:
+      context: .
+      dockerfile: app-logging/Dockerfile.promtail
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - loki
+
+  tarpit:
+    image: fq-tarpit:1.1
+    restart: no
+    labels:
+      project: "fireshipquotes"
+      env: "development"
+      service: "tarpit"
+    build:
+      context: .
+      dockerfile: app-tarpit/Dockerfile.tarpit
+    volumes:
+      - ./mnt-development/tarpit:/vol/nepenthes

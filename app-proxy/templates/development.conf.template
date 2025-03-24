@@ -1,0 +1,111 @@
+# catch-all for subdomains and other shenanigans
+server {
+
+    listen 7733 default_server;
+    server_name _;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+    }
+}
+
+# frontend
+server {
+    listen 7733;
+    server_name ${PUBLIC_SITE_AUTHORITY};
+    
+    client_max_body_size 50G;
+
+    # Set headers
+    proxy_set_header Host              $http_host;
+    proxy_set_header X-Real-IP         $remote_addr;
+    proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    add_header 'Access-Control-Allow-Origin' '*' always;
+
+    # set timeout
+    proxy_read_timeout 1200s;
+    proxy_send_timeout 1200s;
+    send_timeout       1200s;
+
+    location / {
+        proxy_pass ${PRIVATE_SITE_URL};
+        error_page 404 = @tarpit;
+        proxy_intercept_errors on;
+    }
+
+    # tarpit for scrapers
+    location @tarpit {
+        internal;
+
+        # ignore query args
+        set $args '';
+
+        # we want a unique value on every uri
+        rewrite ^(.*)$ $uri break;
+        proxy_set_header X-Prefix $uri;
+
+        proxy_pass http://tarpit:8893;
+        proxy_buffering off;
+    }
+}
+
+# pocketbase
+server {
+
+    listen 7733;
+    server_name ${PUBLIC_POCKETBASE_AUTHORITY};
+
+    client_max_body_size 50000M;
+
+    # websockets!!
+    proxy_http_version 1.1;
+    proxy_set_header   Upgrade    $http_upgrade;
+    proxy_set_header   Connection "upgrade";
+
+    # Set headers
+    proxy_set_header Host              $http_host;
+    proxy_set_header X-Real-IP         $remote_addr;
+    proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # set timeout
+    proxy_read_timeout 1200s;
+    proxy_send_timeout 1200s;
+    send_timeout       1200s;
+
+    location / {
+        proxy_pass ${PRIVATE_POCKETBASE_URL};
+    }
+}
+
+
+# grafana dashboard
+server {
+
+    listen 7733;
+    server_name ${PUBLIC_LOGGING_AUTHORITY};
+
+    client_max_body_size 50000M;
+
+    # websockets!!
+    proxy_http_version 1.1;
+    proxy_set_header   Upgrade    $http_upgrade;
+    proxy_set_header   Connection "upgrade";
+  
+    # Set headers
+    proxy_set_header Host              $http_host;
+    proxy_set_header X-Real-IP         $remote_addr;
+    proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # set timeout
+    proxy_read_timeout 1200s;
+    proxy_send_timeout 1200s;
+    send_timeout       1200s;
+
+    location / {
+        proxy_pass ${PRIVATE_LOGGING_URL};
+    }
+}

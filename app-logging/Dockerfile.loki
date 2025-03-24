@@ -1,0 +1,8 @@
+FROM grafana/loki:3.3.2
+
+USER root
+
+COPY app-logging/loki.yaml /etc/loki/config.yaml
+
+# -log-config-reverse-order
+CMD ["-config.file=/etc/loki/config.yaml", "-print-config-stderr"]

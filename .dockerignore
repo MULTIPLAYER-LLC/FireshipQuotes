@@ -1,0 +1,9 @@
+Dockerfile.*
+docker.*.yaml
+README.md
+./tmp/
+.git/
+./env/
+/mnt-development/
+/mnt-staging/
+/mnt-production/

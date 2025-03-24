@@ -1,0 +1,48 @@
+FROM nickblah/lua:5.4-luarocks-alpine
+
+RUN apk add --no-cache build-base
+RUN apk add --no-cache sqlite 
+RUN apk add --no-cache openssl
+RUN apk add --no-cache words
+RUN apk add --no-cache curl
+RUN apk add --no-cache lua5.4-cqueues
+RUN apk add --no-cache lua5.4-ossl
+RUN apk add --no-cache lua5.4-lpeg
+RUN apk add --no-cache lua5.4-lzlib
+RUN apk add --no-cache lua5.4-dbi-sqlite3
+
+RUN <<EOF
+	wget https://zadzmo.org/code/nepenthes/downloads/nepenthes-1.1.tar.gz
+	tar -xvzf nepenthes-1.1.tar.gz
+	mv nepenthes-1.1 /usr/nepenthes
+	rm nepenthes-1.1.tar.gz
+EOF
+
+RUN luarocks install lunix
+
+COPY app-tarpit/config.yaml /etc/nepenthes-config.yml
+COPY --chown=nepenthes:nepenthes app-tarpit/corpus.sqlite.db /srv/corpus.sqlite.db
+
+VOLUME /vol/nepenthes
+RUN <<EOF
+	adduser -D nepenthes
+	chown nepenthes /var/run
+	mkdir -p /vol/nepenthes
+	chown nepenthes /vol/nepenthes
+
+  chown -R nepenthes:nepenthes /srv
+  chmod -R u+rwX /srv
+EOF
+
+# COPY app-tarpit/corpus.txt /usr/nepenthes/corpus.txt
+# COPY app-tarpit/train.sh /usr/nepenthes/train.sh
+
+USER nepenthes
+EXPOSE 8893
+WORKDIR /usr/nepenthes
+
+# Performance enhancement
+RUN echo 'PRAGMA journal_mode = wal;' | sqlite3 /srv/corpus.sqlite.db
+
+ENV NDIR="/usr/nepenthes"
+CMD ["sh", "/usr/nepenthes/nepenthes", "/etc/nepenthes-config.yml", "/usr/nepenthes/docker/bootstrap.lua"]

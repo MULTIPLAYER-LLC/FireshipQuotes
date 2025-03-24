@@ -1,0 +1,4 @@
+# this tells git-crypt which files we want to encrypt
+
+/env/production/.env filter=git-crypt diff=git-crypt
+/app-proxy/ssl/* filter=git-crypt diff=git-crypt

@@ -1,0 +1,6 @@
+FROM grafana/promtail:3.3.2
+
+COPY app-logging/promtail.yaml /etc/promtail/config.yaml
+
+# -log-config-reverse-order
+CMD ["-config.file=/etc/promtail/config.yaml", "-print-config-stderr", "-config.expand-env=true"]
