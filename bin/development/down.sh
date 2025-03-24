@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo docker compose -f compose.development.yaml down
+sudo docker compose --env-file env/development/.env -f compose.development.yaml down
