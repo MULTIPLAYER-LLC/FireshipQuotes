@@ -1,14 +1,13 @@
 <script lang="ts">
   import PostPreview from '$lib/ui/PostPreview.svelte';
   import FileUpload from '$lib/ui/FileUpload.svelte';
-  import { loadRecord } from '$lib/realtime/posts';
   import { onMount } from 'svelte';
   import { pb } from '$lib/util/pocketbase';
 
   const formatDate = (date: Date) => date.toISOString().replace("T", " ");
   let priorDate = $state(new Date("July 4, 2999"));
   
-  let posts: Set<string> = $state(new Set<string>());
+  let posts: string[] = $state([]);
   let hasMore = $state(true);
 
   async function advanceFeed() {
@@ -24,7 +23,7 @@
     }
     const lastPost = nextPosts.slice(-1)[0];
     priorDate = new Date(lastPost.created);
-    posts = new Set([...posts, ...nextPosts.map(f => f.id)]);
+    posts = [...posts, ...nextPosts.map(f => f.id)];
   }
 
   function observeLastElement(node: HTMLElement) {
@@ -40,13 +39,12 @@
 
   onMount(async () => {
     pb.collection('posts').subscribe('*', async e => {
-      console.log(`POST EVENT: ${JSON.stringify(e)}`)
       const post = e.record;
       if(e.action === 'create') {
-        posts = new Set([post.id, ...posts]);
+        posts = [post.id, ...posts];
       }
       else if(e.action === 'delete') {
-        posts.delete(post.id);
+        posts = posts.filter(e => post.id !== e);
       }
     });
   });
