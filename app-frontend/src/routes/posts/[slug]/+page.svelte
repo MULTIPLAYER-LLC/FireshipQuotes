@@ -3,14 +3,15 @@
 	import { env } from '$env/dynamic/public';
 
   const { data } = $props();
-  const { post, image } = data;
+  const { post, image, owner } = data;
 </script>
 
 <svelte:head>
   <!-- social media display -->
   <title>Fireship Discord Quotes</title>
+  <meta name="description" content="Posted by {owner}">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="{env.PUBLIC_SITE_URL}/posts/{post?.id}">
+  <meta property="og:url" content="{env.PUBLIC_SITE_URL}/posts/{post.id}">
   <meta property="og:site_name" content="FireshipQuotes">
   <meta property="og:image" content="{image}">
 </svelte:head>
