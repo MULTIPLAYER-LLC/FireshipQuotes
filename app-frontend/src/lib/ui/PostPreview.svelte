@@ -2,9 +2,11 @@
   import { currentAuth, pb } from '$lib/util/pocketbase';
   import { listen as listenPostVotes } from '$lib/realtime/postVotes';
   import { listen as listenPosts } from '$lib/realtime/posts';
-  import { ThumbsUpSolid, ThumbsUpOutline, ThumbsDownSolid, ThumbsDownOutline } from 'flowbite-svelte-icons';
+  import { ThumbsUpSolid, ThumbsUpOutline, ThumbsDownSolid, ThumbsDownOutline, ShareNodesSolid } from 'flowbite-svelte-icons';
   import { Button } from 'flowbite-svelte';
 	import UserPreview from '$lib/ui/UserPreview.svelte';
+  import { clipboard } from '$lib/util/clipboard';
+	import { env } from '$env/dynamic/public';
 
   let { postId = "3b1s550qnr1z513" } = $props();
   let post: any = $state(null);
@@ -44,8 +46,8 @@
 </script>
 
 {#if post}
-<div class="h-auto text-center w-full grid grid-cols-2 grid-cols-[30px_auto] grid-rows-5 grid-rows-[55px_25px_25px_25px_auto_50px] gap-0">
-  <a href="/posts/{postId}" class="row-span-4 col-start-2 row-start-2 w-full h-full block">
+<div class="h-auto text-center w-full grid grid-cols-2 grid-cols-[30px_auto] grid-rows-5 grid-rows-[55px_25px_25px_25px_25px_auto_50px] gap-0">
+  <a href="/posts/{postId}" class="row-span-5 col-start-2 row-start-2 w-full h-full block">
     <img src={pb.files.getURL(post, post?.image)} alt="funny quote" class="h-auto w-full" />
   </a>
   <div class="col-start-1 row-start-1 col-span-2 text-left">
@@ -63,7 +65,6 @@
     {/if}
   </div>
   <div class="col-start-1 row-start-4">
-
     {#if postVoteData?.prior_vote?.vote_type === "downvote"}
       <Button on:click={() => vote(null)} color="none" class="p-0 m-0 w-6 h-8=6">
         <ThumbsDownSolid color="red" class="w-6 h-8=6" />
@@ -74,10 +75,16 @@
       </Button>
     {/if}
   </div>
+  <div class="col-start-1 row-start-5">
+    <Button on:click={() => clipboard(`${env.PUBLIC_SITE_URL}/posts/${postId}`)} color="none" class="p-0 m-0 w-6 h-8=6">
+      <ShareNodesSolid color="gray" class="w-6 h-8=6" />
+    </Button>
+  </div>
+
   <div class="col-start-1 row-start-3 text-left px-2">
     {postVoteData.num_votes}<!-- num. upvotes -->
   </div>
-  <div class="col-span-2 col-start-1 row-start-6">
+  <div class="col-span-2 col-start-1 row-start-7">
     {new Date(post.created).toDateString()}
     <!-- comment preview -->
   </div>
