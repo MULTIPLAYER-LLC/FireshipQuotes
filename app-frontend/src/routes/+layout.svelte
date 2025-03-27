@@ -50,6 +50,7 @@
     <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
       <FooterLink href="https://discord.gg/wAxRKV6Xrv" target="_blank">Fireship Discord</FooterLink>
       <FooterLink href="/privacy">Privacy Policy</FooterLink>
+      <FooterLink href="https://github.com/MULTIPLAYER-LLC/FireshipQuotes">Source Code</FooterLink>
     </FooterLinkGroup>
   </Footer>
 </div>

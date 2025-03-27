@@ -1,12 +1,18 @@
 import { pb } from "$lib/util/pocketbase"; // for helper methods reasons
 import { error } from "@sveltejs/kit";
+import { redirect } from '@sveltejs/kit';
 
-export async function load({ params, locals, request }: { params: any, locals: any, request: any }) {
+export async function load({ params, locals }: { params: any, locals: any }) {
   try {
-    const postId = params.slug;
+    const getPlainImage = params.slug.includes(".");
+    const postId = params.slug.split(".")[0];
     const post = await locals.pb.collection('posts').getOne(postId, { expand: 'owner' });
     const image = pb.files.getURL(post, post?.image);
     const owner = `${post.expand.owner.name}`;
+
+    if(getPlainImage) {
+      throw redirect(308, image);
+    }
 
     return { post, image, owner };
   }catch(e) {
