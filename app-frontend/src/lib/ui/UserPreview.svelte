@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { currentAuth, pb } from '$lib/util/pocketbase';
+  import { pb } from '$lib/util/pocketbase';
   import { listen as listenVotes } from '$lib/realtime/userVotes';
   import { listen as listenPosts } from '$lib/realtime/userPosts';
   import { listen as listenUsers } from '$lib/realtime/users';
@@ -31,7 +31,7 @@
 </script>
 
 <div class="flex items-center space-x-4 rtl:space-x-reverse">
-  <Avatar src={pb.files.getURL(user, user?.avatar)} alt={user?.name} rounded />
+  <Avatar src={pb.files.getURL(user, user?.avatar)} alt={user?.name} rounded onclick={() => window.location.href = `/users/${userId}`} />
   <div class="space-y-1 font-medium dark:text-white">
     <div class="flex items-center">
       {user?.name}

@@ -1,17 +1,23 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { pb } from '$lib/util/pocketbase.js';
 	import PostPreview from '$lib/ui/PostPreview.svelte';
+	import { env } from '$env/dynamic/public';
 
-  let { data = { postId: "3b1s550qnr1z513" } } = $props();
-  let postId = data?.postId;
-  let post: any = $state(null);
-
-  onMount(async () => {
-    post = await pb.collection('posts').getOne(postId);
-  });
+  const { data } = $props();
+  const { post } = data;
 </script>
 
-{#if post}
-  <PostPreview postId={postId}/>
-{/if}
+<svelte:head>
+  <!-- seo -->
+  <title>Fireship Discord quote</title>
+  <meta name="description" content="Quote from the Fireship Discord server">
+  
+  <!-- social media display -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{env.PUBLIC_SITE_URL}/posts/{post?.id}">
+  <meta property="og:site_name" content="FireshipQuotes">
+  <meta property="og:image" content="{post?.image}">
+</svelte:head>
+
+<article class="max-w-full w-400 mx-auto px-5">
+  <PostPreview postId={post.id}/>
+</article>

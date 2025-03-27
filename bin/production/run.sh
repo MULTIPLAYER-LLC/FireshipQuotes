@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo docker compose -f compose.production.yaml $*
+sudo docker compose --env-file env/production/.env -f compose.production.yaml $*
