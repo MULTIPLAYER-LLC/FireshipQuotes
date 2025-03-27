@@ -7,14 +7,18 @@
 </script>
 
 <svelte:head>
-  <!-- social media display -->
   <title>Fireship Discord Quotes</title>
   <meta name="description" content="Quoted by {owner}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="{env.PUBLIC_SITE_URL}">
   <meta property="og:image" content="{image}">
+  <meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
 <article class="max-w-full w-400 mx-auto px-5">
   <PostPreview postId={post.id}/>
 </article>
+
+<center>
+  <u><a href="/" class="text-sky-600">back to all quotes</a></u>
+</center>
