@@ -33,7 +33,7 @@ After cloning this repository to the folder of your choice, run the following se
 sudo ./bin/_init/init-apt-install.sh
 ./bin/_init/init-asdf.sh
 ./bin/_init/init-nodejs.sh
-sudo ./bin/docker-init.sh
+sudo ./bin/_init/init-docker.sh
 cd app-frontend && ../bin/_init/init-npm.sh && cd -
 sudo ./bin/_init/init-hosts.sh
 ```
