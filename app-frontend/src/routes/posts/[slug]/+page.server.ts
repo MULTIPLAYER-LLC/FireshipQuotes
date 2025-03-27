@@ -4,16 +4,10 @@ import { redirect } from '@sveltejs/kit';
 
 export async function load({ params, locals }: { params: any, locals: any }) {
   try {
-    const getPlainImage = params.slug.includes(".");
-    const postId = params.slug.split(".")[0];
+    const postId = params.slug;
     const post = await locals.pb.collection('posts').getOne(postId, { expand: 'owner' });
     const image = pb.files.getURL(post, post?.image);
     const owner = `${post.expand.owner.name}`;
-
-    if(getPlainImage) {
-      throw redirect(308, image);
-    }
-
     return { post, image, owner };
   }catch(e) {
     console.log(e);
