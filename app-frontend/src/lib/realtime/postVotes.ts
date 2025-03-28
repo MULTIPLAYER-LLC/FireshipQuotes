@@ -60,7 +60,7 @@ if(browser) {
 
   pb.authStore.onChange(auth => {
     console.log('detected change in auth, maybe will trigger post vote refresh?')
-    if(browser && pb.authStore.isValid) {
+    if(browser) {
       refresh(); // todo only need to refresh prior votes, not also numvotes
     }
   });
