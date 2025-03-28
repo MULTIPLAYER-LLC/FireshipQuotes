@@ -31,7 +31,7 @@ server {
 
     location / {
         proxy_pass ${PRIVATE_SITE_URL};
-        error_page 404 = @tarpit;
+        error_page 404 = @tarpit; # $upstream_status = the response of the original proxy_pass, and $status is the final status we return
         proxy_intercept_errors on;
     }
 
