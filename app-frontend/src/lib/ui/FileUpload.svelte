@@ -18,10 +18,18 @@
       });
     }
   }
+
+  async function onExpand() {
+    if(!$currentAuth) {
+      await pb.collection('users').authWithOAuth2({ provider: "discord" });
+    }
+    formModal = true;
+  }
+
 </script>
 
 <SpeedDial color="primary" defaultClass="fixed end-6 bottom-6 z-10">
-  <Button pill={true} on:click={() => (formModal = true)} slot="button" color="primary" class="p-3">
+  <Button pill={true} on:click={onExpand} slot="button" color="primary" class="p-3">
     <FileCirclePlusSolid class="w-8 h-8" />
   </Button>
 </SpeedDial>

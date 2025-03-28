@@ -13,6 +13,11 @@
   let postVoteData: any = $state({num_votes: 0, prior_vote: null});
 
   async function vote(type: string|null) {
+
+    if(!$currentAuth) {
+      await pb.collection('users').authWithOAuth2({ provider: "discord" });
+    }
+
     const priorVote = postVoteData?.prior_vote;
     console.log(`voting! state='${JSON.stringify(postVoteData)}'`);
 

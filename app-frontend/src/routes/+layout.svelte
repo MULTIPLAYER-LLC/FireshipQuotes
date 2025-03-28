@@ -23,7 +23,7 @@
     </NavBrand>
     <NavHamburger />
     {#if $currentAuth}
-      <NavUl >
+      <NavUl>
         <NavLi id="user-menu" class="cursor-pointer">Account</NavLi>
       <Dropdown placement="bottom" triggeredBy="#user-menu">
         <DropdownHeader>
@@ -31,7 +31,7 @@
           <span class="block truncate text-sm font-thin">{$currentAuth?.discord_id || "xxxxxxxxxxxxxxxxxx" }</span>
         </DropdownHeader>
         <DropdownDivider />
-        <DropdownItem class="cursor-pointer" on:click={signOut}>Sign out</DropdownItem>
+        <DropdownItem class="cursor-pointer" on:click={signOut}>Log Out</DropdownItem>
       </Dropdown>
     </NavUl>
     {:else}
