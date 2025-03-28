@@ -10,7 +10,6 @@ export function key(postId: string) {
 }
 
 export async function listen(postId: string, callback: Subscriber<any>): Promise<Unsubscriber> {
-  console.log(`realtime +${key(postId)}: ${JSON.stringify(actives)}`);
   const activesCount = actives.get(postId) || 0;
   actives.set(postId, activesCount + 1);
   
@@ -35,6 +34,14 @@ export function stopListen(postId: string) {
   }
 }
 
+export async function refresh(): Promise<void> {
+  console.log("refreshing all user prior votes");
+  const promises = actives.keys().map(e => {
+    load(e);
+  });
+  await Promise.all(promises);
+}
+
 export async function load(postId: string): Promise<object> {
   const num_votes = await getNumVotes(postId);
   const prior_vote = await getPriorVote(postId);
@@ -48,6 +55,13 @@ if(browser) {
     const postId = e.record.post;
     if(actives.has(postId)) {
       await load(postId);
+    }
+  });
+
+  pb.authStore.onChange(auth => {
+    console.log('detected change in auth, maybe will trigger post vote refresh?')
+    if(browser && pb.authStore.isValid) {
+      refresh(); // todo only need to refresh prior votes, not also numvotes
     }
   });
 }
