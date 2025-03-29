@@ -12,9 +12,15 @@
   async function uploadImage() {
     if(images.length > 0 && !locked) {
       formModal = false;
-      await pb.collection('posts').create({
+      const post = await pb.collection('posts').create({
         image: images.item(0),
         owner: $currentAuth.id
+      });
+      // upvote the post automatically
+      await pb.collection('votes').create({
+        vote_type: "upvote",
+        owner: $currentAuth.id,
+        post: post.id
       });
     }
   }
