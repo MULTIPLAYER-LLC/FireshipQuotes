@@ -60,28 +60,28 @@
   </div>
   <div class="col-start-1 row-start-2 mx-auto">
     {#if postVoteData?.prior_vote?.vote_type === "upvote"}
-      <Button on:click={() => vote(null)} color="none" class="p-0 m-0 w-6 h-8=6">
+      <Button on:click={() => vote(null)} color="none" class="p-0 m-0 w-6 h-8=6 cursor-pointer">
         <ThumbsUpSolid color="green" class="w-6 h-8=6" />
       </Button>
     {:else}
-      <Button on:click={() => vote("upvote")} color="none" class="p-0 m-0 w-6 h-8=6">
+      <Button on:click={() => vote("upvote")} color="none" class="p-0 m-0 w-6 h-8=6 cursor-pointer">
         <ThumbsUpOutline color="green" class="w-6 h-8=6" />
       </Button>
     {/if}
   </div>
   <div class="col-start-1 row-start-4">
     {#if postVoteData?.prior_vote?.vote_type === "downvote"}
-      <Button on:click={() => vote(null)} color="none" class="p-0 m-0 w-6 h-8=6">
+      <Button on:click={() => vote(null)} color="none" class="p-0 m-0 w-6 h-8=6 cursor-pointer">
         <ThumbsDownSolid color="red" class="w-6 h-8=6" />
       </Button>
     {:else}
-      <Button on:click={() => vote("downvote")} color="none" class="p-0 m-0 w-6 h-8=6">
+      <Button on:click={() => vote("downvote")} color="none" class="p-0 m-0 w-6 h-8=6 cursor-pointer">
         <ThumbsDownOutline color="red" class="w-6 h-8=6" />
       </Button>
     {/if}
   </div>
   <div class="col-start-1 row-start-5">
-    <Button on:click={() => clipboard(`${env.PUBLIC_SITE_URL}/posts/${postId}`)} color="none" class="p-0 m-0 w-6 h-8=6">
+    <Button on:click={() => clipboard(`${env.PUBLIC_SITE_URL}/posts/${postId}`)} color="none" class="p-0 m-0 w-6 h-8=6 cursor-pointer">
       <ShareNodesSolid color="gray" class="w-6 h-8=6" />
     </Button>
   </div>
