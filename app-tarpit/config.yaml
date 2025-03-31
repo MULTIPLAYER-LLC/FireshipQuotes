@@ -12,8 +12,8 @@ persist_stats: '/vol/nepenthes/statsfile.json'
 seed_file: '/vol/nepenthes/seed.txt'
 
 markov: '/srv/corpus.sqlite.db'
-markov_min: 599
-markov_max: 600
+markov_min: 1
+markov_max: 100000
 
-min_wait: 4
-max_wait: 25
+min_wait: 0
+max_wait: 0.01
