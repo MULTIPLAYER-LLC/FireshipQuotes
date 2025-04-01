@@ -12,7 +12,7 @@
   let hasMore = $state(true);
 
   async function advanceFeed() {
-    const res = (await pb.collection('posts').getList(1, 10, {
+    const res = (await pb.collection('posts').getList(1, 4, {
       filter: `created < "${formatDate(priorDate)}"`,
       sort: '-created',
       skipTotal: true
@@ -55,8 +55,8 @@
   <div class="w-200 mx-auto px-5">
     {#each posts as postId (postId) }
       <PostPreview postId={postId}/>
-      <AdPreview/>
     {/each}
+    <AdPreview/>
     {#if hasMore}
       <div use:observeLastElement class="loading"></div><br><br><br>
     {/if}
