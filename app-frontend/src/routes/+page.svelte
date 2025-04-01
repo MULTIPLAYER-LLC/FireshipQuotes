@@ -55,9 +55,7 @@
   <div class="w-200 mx-auto px-5">
     {#each posts as postId (postId) }
       <PostPreview postId={postId}/>
-      {#if new Date().getDate() === 1 && new Date().getMonth() === 4}
-        <AdPreview/>
-      {/if}
+      <AdPreview/>
     {/each}
     {#if hasMore}
       <div use:observeLastElement class="loading"></div><br><br><br>
