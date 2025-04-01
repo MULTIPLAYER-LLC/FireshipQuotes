@@ -55,7 +55,7 @@
   <div class="w-200 mx-auto px-5">
     {#each posts as postId (postId) }
       <PostPreview postId={postId}/>
-      {#if posts.indexOf(postId) != 0 && posts.indexOf(postId) % 3 == 0}
+      {#if posts.indexOf(postId) != 0 && posts.indexOf(postId) % 3 == 2}
         <AdPreview/>
       {/if}
     {/each}
