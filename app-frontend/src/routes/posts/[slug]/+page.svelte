@@ -1,6 +1,8 @@
 <script lang="ts">
 	import PostPreview from '$lib/ui/PostPreview.svelte';
+  import { currentAuth } from '$lib/util/pocketbase.js';
 	import { env } from '$env/dynamic/public';
+	import { Button } from 'flowbite-svelte';
 
   const { data } = $props();
   const { post, image, owner } = data;
