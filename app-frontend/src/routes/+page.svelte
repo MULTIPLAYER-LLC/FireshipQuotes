@@ -3,7 +3,6 @@
   import FileUpload from '$lib/ui/FileUpload.svelte';
   import { onMount } from 'svelte';
   import { pb } from '$lib/util/pocketbase';
-	import AdPreview from '$lib/ui/AdPreview.svelte';
 
   const formatDate = (date: Date) => date.toISOString().replace("T", " ");
   let priorDate = $state(new Date("July 4, 2999"));
@@ -55,9 +54,6 @@
   <div class="w-200 mx-auto px-5">
     {#each posts as postId (postId) }
       <PostPreview postId={postId}/>
-      {#if posts.indexOf(postId) != 0 && posts.indexOf(postId) % 3 == 2}
-        <AdPreview/>
-      {/if}
     {/each}
     {#if hasMore}
       <div use:observeLastElement class="loading"></div><br><br><br>
