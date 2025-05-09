@@ -34,7 +34,7 @@
   <Avatar class="cursor-pointer" src={pb.files.getURL(user, user?.avatar)} alt={user?.name} rounded onclick={() => window.location.href = `/users/${userId}`} />
   <div class="space-y-1 font-medium dark:text-white">
     <div class="flex items-center">
-      {user?.name}
+      <a href={`/users/${userId}`}>{user?.name}</a>
       {#each (roles || []) as role (role) }
         <Badge color={roleColor(role)} class="ml-1">{role}</Badge>
       {/each}
