@@ -30,7 +30,8 @@
   function observeLastElement(node: HTMLElement) {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setTimeout(advanceFeed, 100);
+        advanceFeed();
+        observer.disconnect();
       }
     }, { threshold: 0.0, rootMargin: "600px" });
 
