@@ -12,7 +12,7 @@
   let hasMore = $state(true);
 
   async function advanceFeed() {
-    const res = (await pb.collection('posts').getList(1, 3, {
+    const res = (await pb.collection('posts').getList(1, 10, {
       filter: `created < "${formatDate(priorDate)}"`,
       sort: '-created',
       skipTotal: true
@@ -30,7 +30,7 @@
   function observeLastElement(node: HTMLElement) {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setTimeout(advanceFeed, 500);
+        setTimeout(advanceFeed, 100);
       }
     }, { threshold: 0.0, rootMargin: "600px" });
 
