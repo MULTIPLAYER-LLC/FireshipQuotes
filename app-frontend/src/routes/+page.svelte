@@ -7,11 +7,12 @@
   const formatDate = (date: Date) => date.toISOString().replace("T", " ");
   let priorDate = $state(new Date("July 4, 2999"));
   
+  let throttle: number = $state(Date.now());
   let posts: string[] = $state([]);
   let hasMore = $state(true);
 
   async function advanceFeed() {
-    const res = (await pb.collection('posts').getList(1, 10, {
+    const res = (await pb.collection('posts').getList(1, 3, {
       filter: `created < "${formatDate(priorDate)}"`,
       sort: '-created',
       skipTotal: true
@@ -29,9 +30,9 @@
   function observeLastElement(node: HTMLElement) {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        advanceFeed();
+        setTimeout(advanceFeed, 500);
       }
-    }, { threshold: 0.0, rootMargin: "600px"  });
+    }, { threshold: 0.0, rootMargin: "600px" });
 
     observer.observe(node);
     return { destroy() { observer.disconnect(); } };
