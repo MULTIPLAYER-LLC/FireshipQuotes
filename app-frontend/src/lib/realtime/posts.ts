@@ -10,7 +10,6 @@ export function key(postId: string) {
 }
 
 export async function listen(postId: string, callback: Subscriber<any>): Promise<Unsubscriber> {
-  console.log(`realtime +${key(postId)}: ${JSON.stringify(actives)}`);
   const activesCount = actives.get(postId) || 0;
   actives.set(postId, activesCount + 1);
   

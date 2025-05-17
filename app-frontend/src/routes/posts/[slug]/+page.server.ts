@@ -10,7 +10,7 @@ export async function load({ params, locals }: { params: any, locals: any }) {
     const owner = `${post.expand.owner.name}`;
     return { post, image, owner };
   }catch(e) {
-    console.log(e);
+    console.error(e);
     error(404);
   }
 }

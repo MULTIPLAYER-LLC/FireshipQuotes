@@ -6,12 +6,22 @@
 
   const formatDate = (date: Date) => date.toISOString().replace("T", " ");
   let priorDate = $state(new Date("July 4, 2999"));
-  
-  let throttle: number = $state(Date.now());
+
   let posts: string[] = $state([]);
   let hasMore = $state(true);
+  let debouncing = $state(false);
+
+  function debounce(callback: () => void) {
+    if(debouncing) {
+      return;
+    }
+    debouncing = true;
+    setTimeout(() => debouncing = false, 250);
+    callback();
+  }
 
   async function advanceFeed() {
+    console.log("advanceFeed firing");
     const res = (await pb.collection('posts').getList(1, 10, {
       filter: `created < "${formatDate(priorDate)}"`,
       sort: '-created',
@@ -27,18 +37,6 @@
     posts = [...posts, ...nextPosts.map(f => f.id)];
   }
 
-  function observeLastElement(node: HTMLElement) {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        advanceFeed();
-        observer.disconnect();
-      }
-    }, { threshold: 0.0, rootMargin: "600px" });
-
-    observer.observe(node);
-    return { destroy() { observer.disconnect(); } };
-  }
-
   onMount(async () => {
     pb.collection('posts').subscribe('*', async e => {
       const post = e.record;
@@ -49,6 +47,13 @@
         posts = posts.filter(e => post.id !== e);
       }
     });
+
+    window.addEventListener('scroll', () => {
+      if(hasMore && window.innerHeight + window.scrollY >= Math.max(document.body.offsetHeight * 0.85, document.body.offsetHeight - 500)) {
+        debounce(advanceFeed);
+      }
+    });
+    advanceFeed();
   });
 </script>
 
@@ -57,9 +62,6 @@
     {#each posts as postId (postId) }
       <PostPreview postId={postId}/>
     {/each}
-    {#if hasMore}
-      <div use:observeLastElement class="loading"></div><br><br><br>
-    {/if}
   </div>
 </div>
 

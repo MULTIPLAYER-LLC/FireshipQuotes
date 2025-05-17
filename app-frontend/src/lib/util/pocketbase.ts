@@ -14,15 +14,16 @@ export const currentAuth: any = writable(pb.authStore.record);
 if(!browser) {
   global.EventSource = EventSource;
 }
-else {
+
+pb.authStore.onChange(auth => {
+  console.log('authStore changed', auth);
+  currentAuth.set(pb.authStore.record);
+});
+
+if(browser) {
   // get an up-to-date auth store state by verifying and refreshing the loaded auth model (if any)
   console.log("is my auth valid???", pb.authStore.isValid);
   pb.collection('users')
     .authRefresh()
     .catch(() => pb.authStore.clear() );
 }
-
-pb.authStore.onChange(auth => {
-  console.log('authStore changed', auth);
-  currentAuth.set(pb.authStore.record);
-});

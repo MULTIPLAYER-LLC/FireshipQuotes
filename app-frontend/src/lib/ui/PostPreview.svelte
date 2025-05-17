@@ -41,8 +41,8 @@
   function load(node: HTMLElement) {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        listenPosts(postId, e => { post = e ; console.log(post) });
-        listenPostVotes(postId, e => postVoteData = e || {num_votes: 0, prior_vote: null});
+        listenPosts(postId, e => { post = e });
+        listenPostVotes(postId, e => postVoteData = (e || {num_votes: 0, prior_vote: null}) );
       }
     }, { threshold: 0.0, rootMargin: "600px" });
     observer.observe(node);
