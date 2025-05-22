@@ -1,6 +1,5 @@
 <script lang="ts">
 	import PostPreview from '$lib/ui/PostPreview.svelte';
-  import { currentAuth } from '$lib/util/pocketbase.js';
 	import { env } from '$env/dynamic/public';
 	import { Button } from 'flowbite-svelte';
 
@@ -22,5 +21,5 @@
 </article>
 
 <center>
-  <u><a href="/" class="text-sky-600">back to all quotes</a></u>
+  <u><a href="/recent" class="text-sky-600">back to all quotes</a></u>
 </center>

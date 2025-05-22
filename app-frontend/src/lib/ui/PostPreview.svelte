@@ -7,6 +7,7 @@
 	import UserPreview from '$lib/ui/UserPreview.svelte';
   import { clipboard } from '$lib/util/clipboard';
 	import { env } from '$env/dynamic/public';
+	import { onMount } from 'svelte';
 
   let { postId = "3b1s550qnr1z513" } = $props();
   let post: any = $state(null);
@@ -38,16 +39,11 @@
     }
     await batch.send();
   }
-  function load(node: HTMLElement) {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        listenPosts(postId, e => { post = e });
-        listenPostVotes(postId, e => postVoteData = (e || {num_votes: 0, prior_vote: null}) );
-      }
-    }, { threshold: 0.0, rootMargin: "600px" });
-    observer.observe(node);
-    return { destroy() { observer.disconnect(); } };
-  }
+
+  onMount(async () => {
+    listenPosts(postId, e => { post = e });
+    listenPostVotes(postId, e => postVoteData = (e || {num_votes: 0, prior_vote: null}) );
+  });
 </script>
 
 {#if post}
@@ -94,6 +90,4 @@
     <!-- comment preview -->
   </div>
 </div>
-{:else}
-  <div use:load class="h-100"></div>
 {/if}
