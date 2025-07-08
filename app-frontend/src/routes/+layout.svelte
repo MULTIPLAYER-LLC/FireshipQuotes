@@ -12,15 +12,16 @@
   async function signOut() {
     pb.authStore.clear();
   }
-
 </script>
 
 <div class="min-h-screen min-w-screen relative z-0">
+  <script src="https://yellowbrickring.com/widget.js" defer></script>
   <Navbar>
     <NavBrand href="/">
       <img src="/favicon.png" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
       <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Fireship Discord Quotes</span>
     </NavBrand>
+    <webring-widget site-id="fireshipquotes.com"></webring-widget>
     <NavHamburger />
     {#if $currentAuth}
       <NavUl>
