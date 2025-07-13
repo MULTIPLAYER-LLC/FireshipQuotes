@@ -1,6 +1,7 @@
 <script lang="ts">
   import PostPreview from '$lib/ui/PostPreview.svelte';
   import FileUpload from '$lib/ui/FileUpload.svelte';
+  import WebRing from '$lib/ui/WebRing.svelte';
   import { onMount } from 'svelte';
   import { pb } from '$lib/util/pocketbase';
 
@@ -57,6 +58,7 @@
   });
 </script>
 
+<WebRing />
 <div class="flex w-full">
   <div class="w-200 mx-auto px-5">
     {#each posts as postId (postId) }
