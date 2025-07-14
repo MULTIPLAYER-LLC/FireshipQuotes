@@ -37,7 +37,7 @@ EOF
 # COPY app-tarpit/corpus.txt /usr/nepenthes/corpus.txt
 # COPY app-tarpit/train.sh /usr/nepenthes/train.sh
 
-USER nepenthes
+# USER nepenthes
 EXPOSE 8893
 WORKDIR /usr/nepenthes
 

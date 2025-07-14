@@ -93,8 +93,8 @@ services:
       context: .
       dockerfile: app-logging/Dockerfile.promtail
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.local/share/docker/containers:/var/lib/docker/containers:ro
+      - ${XDG_RUNTIME_DIR}/docker.sock:/var/run/docker.sock
     depends_on:
       - loki
 
