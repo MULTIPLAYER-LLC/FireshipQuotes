@@ -1,6 +1,7 @@
 Dockerfile.*
 docker.*.yaml
 README.md
+**/git-crypt-key
 ./tmp/
 .git/
 ./env/

@@ -1,4 +1,5 @@
 node_modules
+**/git-crypt-key
 /tmp
 /mnt-development/
 /mnt-production/
