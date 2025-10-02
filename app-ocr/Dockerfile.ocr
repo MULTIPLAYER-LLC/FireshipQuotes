@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+USER root
+WORKDIR /srv/app-ocr
+
+RUN apt update && apt install -y tesseract-ocr curl
+
+COPY app-ocr/requirements.txt /srv/app-ocr/
+RUN pip install -r /srv/app-ocr/requirements.txt
+
+COPY app-ocr/src/ /srv/app-ocr/src/
+CMD ["python", "src/main.py"]
+
+HEALTHCHECK --interval=1s --timeout=3s --start-period=1s --retries=1 \
+  CMD curl -f http://localhost:5000/health || exit 1

@@ -37,24 +37,24 @@ server {
 
     location / {
         proxy_pass ${PRIVATE_SITE_URL};
-        error_page 404 = @tarpit;
-        proxy_intercept_errors on;
+#        error_page 404 = @tarpit;
+#        proxy_intercept_errors on;
     }
 
     # tarpit for scrapers
-    location @tarpit {
-        internal;
+#    location @tarpit {
+#        internal;
 
         # ignore query args
-        set $args '';
+#        set $args '';
 
-        # we want a unique value on every uri
-        rewrite ^(.*)$ $uri break;
-        proxy_set_header X-Prefix $uri;
+#        # we want a unique value on every uri
+#        rewrite ^(.*)$ $uri break;
+#        proxy_set_header X-Prefix $uri;
 
-        proxy_pass http://tarpit:8893;
-        proxy_buffering off;
-    }
+#        proxy_pass http://tarpit:8893;
+#        proxy_buffering off;
+#    }
 }
 
 # pocketbase

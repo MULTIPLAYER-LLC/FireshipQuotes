@@ -1,6 +1,20 @@
 name: "fireshipquotes-production"
 
 services:
+  ocr:
+    image: fq-ocr:python-3.11-slim
+    restart: always
+    stop_signal: SIGKILL
+    labels:
+      project: "fireshipquotes"
+      env: "production"
+      service: "ocr"
+    env_file:
+      - env/production/.env
+    build:
+      context: .
+      dockerfile: app-ocr/Dockerfile.ocr
+
   pocketbase:
     image: fq-pocketbase:0.23.12-alpine
     restart: always
@@ -19,6 +33,7 @@ services:
   frontend:
     image: fq-frontend:1.0.0-alpine
     restart: always
+    stop_signal: SIGKILL
     labels:
       project: "fireshipquotes"
       env: "production"
@@ -34,6 +49,7 @@ services:
   proxy:
     image: fq-proxy:nginx-1.27.3-alpine
     restart: always
+    stop_signal: SIGKILL
     labels:
       project: "fireshipquotes"
       env: "production"
@@ -98,15 +114,16 @@ services:
     depends_on:
       - loki
 
-  tarpit:
-    image: fq-tarpit:1.1
-    restart: always
-    labels:
-      project: "fireshipquotes"
-      env: "production"
-      service: "tarpit"
-    build:
-      context: .
-      dockerfile: app-tarpit/Dockerfile.tarpit
-    volumes:
-      - ./mnt-production/tarpit:/vol/nepenthes
+  # tarpit:
+  #   image: fq-tarpit:1.1
+  #   restart: always
+  #   stop_signal: SIGKILL
+  #   labels:
+  #     project: "fireshipquotes"
+  #     env: "production"
+  #     service: "tarpit"
+  #   build:
+  #     context: .
+  #     dockerfile: app-tarpit/Dockerfile.tarpit
+  #   volumes:
+  #     - ./mnt-production/tarpit:/vol/nepenthes

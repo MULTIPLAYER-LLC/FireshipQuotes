@@ -31,24 +31,24 @@ server {
 
     location / {
         proxy_pass ${PRIVATE_SITE_URL};
-        error_page 404 = @tarpit; # $upstream_status = the response of the original proxy_pass, and $status is the final status we return
-        proxy_intercept_errors on;
+#        error_page 404 = @tarpit; # $upstream_status = the response of the original proxy_pass, and $status is the final status we return
+#        proxy_intercept_errors on;
     }
 
     # tarpit for scrapers
-    location @tarpit {
-        internal;
-
-        # ignore query args
-        set $args '';
-
-        # we want a unique value on every uri
-        rewrite ^(.*)$ $uri break;
-        proxy_set_header X-Prefix $uri;
-
-        proxy_pass http://tarpit:8893;
-        proxy_buffering off;
-    }
+#    location @tarpit {
+#        internal;
+#
+#        # ignore query args
+#        set $args '';
+#
+#        # we want a unique value on every uri
+#        rewrite ^(.*)$ $uri break;
+#        proxy_set_header X-Prefix $uri;
+#
+#        proxy_pass http://tarpit:8893;
+#        proxy_buffering off;
+#    }
 }
 
 # pocketbase
