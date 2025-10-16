@@ -2,7 +2,7 @@
 
  A simple image-sharing platform powered by SvelteKit and Pocketbase
 
-Deployed @ https://fireshipquotes.com
+Deployed @ https://fireshipquotes.com (will almost certainly contain NSFW user-submitted content)
 
 ## Developer Setup
 
