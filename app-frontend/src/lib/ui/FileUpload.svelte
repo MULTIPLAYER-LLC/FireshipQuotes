@@ -43,5 +43,10 @@
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
   <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Upload a quote!</h3>
   <Fileupload bind:files={images} />
+  {#if images?.length > 0}
+    <div class="mt-4 mb-4">
+      <img src={URL.createObjectURL(images.item(0))} alt="Preview" class="w-full h-auto rounded-lg" />
+    </div>
+  {/if}
   <Button on:click={uploadImage} type="submit" class="w-full1">Upload!</Button>
 </Modal>
