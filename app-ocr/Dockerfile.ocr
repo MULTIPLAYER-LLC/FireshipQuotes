@@ -1,9 +1,9 @@
-FROM python:3.11-slim
+FROM python:3.11.9-slim
 
 USER root
 WORKDIR /srv/app-ocr
 
-RUN apt update && apt install -y tesseract-ocr curl
+RUN apt update && apt install -y curl libgomp1 libgl1-mesa-glx libglib2.0-0
 
 COPY app-ocr/requirements.txt /srv/app-ocr/
 RUN pip install -r /srv/app-ocr/requirements.txt

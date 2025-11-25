@@ -14,6 +14,8 @@ services:
     build:
       context: .
       dockerfile: app-ocr/Dockerfile.ocr
+    volumes:
+      - ./mnt-development/ocr:/root/.paddlex
 
   pocketbase:
     image: fq-pocketbase:0.23.12-alpine
@@ -65,66 +67,52 @@ services:
     depends_on:
       - pocketbase
       - frontend
-      - grafana
+      # - grafana
 
-  grafana:
-    image: fq-grafana-oss:11.4.0-ubuntu
-    restart: no
-    labels:
-      project: "fireshipquotes"
-      env: "development"
-      service: "grafana"
-    env_file:
-      - env/development/.env
-    build:
-      context: .
-      dockerfile: app-logging/grafana/Dockerfile.grafana
-    volumes:
-      - ./mnt-development/grafana:/var/lib/grafana
-
-  loki:
-    image: fq-loki:3.3.2
-    restart: no
-    labels:
-      project: "fireshipquotes"
-      env: "development"
-      service: "loki"
-    env_file:
-      - env/development/.env
-    build:
-      context: .
-      dockerfile: app-logging/Dockerfile.loki
-    volumes:
-      - ./mnt-development/loki:/data
-
-  promtail:
-    image: fq-promtail:3.3.2
-    restart: no
-    labels:
-      project: "fireshipquotes"
-      env: "development"
-      service: "promtail"
-    env_file:
-      - env/development/.env
-    build:
-      context: .
-      dockerfile: app-logging/Dockerfile.promtail
-    volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - loki
-
-  # tarpit:
-  #   image: fq-tarpit:1.1
+  # grafana:
+  #   image: fq-grafana-oss:11.4.0-ubuntu
   #   restart: no
-  #   stop_signal: SIGKILL
   #   labels:
   #     project: "fireshipquotes"
   #     env: "development"
-  #     service: "tarpit"
+  #     service: "grafana"
+  #   env_file:
+  #     - env/development/.env
   #   build:
   #     context: .
-  #     dockerfile: app-tarpit/Dockerfile.tarpit
+  #     dockerfile: app-logging/grafana/Dockerfile.grafana
   #   volumes:
-  #     - ./mnt-development/tarpit:/vol/nepenthes
+  #     - ./mnt-development/grafana:/var/lib/grafana
+
+  # loki:
+  #   image: fq-loki:3.3.2
+  #   restart: no
+  #   labels:
+  #     project: "fireshipquotes"
+  #     env: "development"
+  #     service: "loki"
+  #   env_file:
+  #     - env/development/.env
+  #   build:
+  #     context: .
+  #     dockerfile: app-logging/Dockerfile.loki
+  #   volumes:
+  #     - ./mnt-development/loki:/data
+
+  # promtail:
+  #   image: fq-promtail:3.3.2
+  #   restart: no
+  #   labels:
+  #     project: "fireshipquotes"
+  #     env: "development"
+  #     service: "promtail"
+  #   env_file:
+  #     - env/development/.env
+  #   build:
+  #     context: .
+  #     dockerfile: app-logging/Dockerfile.promtail
+  #   volumes:
+  #     - /var/lib/docker/containers:/var/lib/docker/containers:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   depends_on:
+  #     - loki

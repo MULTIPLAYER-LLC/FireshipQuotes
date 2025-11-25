@@ -113,17 +113,3 @@ services:
       - ${XDG_RUNTIME_DIR}/docker.sock:/var/run/docker.sock
     depends_on:
       - loki
-
-  # tarpit:
-  #   image: fq-tarpit:1.1
-  #   restart: always
-  #   stop_signal: SIGKILL
-  #   labels:
-  #     project: "fireshipquotes"
-  #     env: "production"
-  #     service: "tarpit"
-  #   build:
-  #     context: .
-  #     dockerfile: app-tarpit/Dockerfile.tarpit
-  #   volumes:
-  #     - ./mnt-production/tarpit:/vol/nepenthes
